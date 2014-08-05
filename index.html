@@ -169,13 +169,13 @@
 		var hash = window.location.hash.substring(1);
 			$('#videoid').empty().val('https://www.youtube.com/watch?v='+hash);
 			$('iframe#player').attr('src', 'http://www.youtube.com/embed/'+hash+'?autoplay=1');
-			setTimeout(function () {
-			$('#youtubeDataQuery').trigger('submit');
-					}, 10);
+			// setTimeout(function () {
+			// $('#youtubeDataQuery').trigger('submit');
+			// 		}, 10);
 		}
 	
 		$('#youtubeDataQuery').submit(function(e) {
-			$('#output').animate({ marginBottom: -90}, 100).delay(500).animate({ marginBottom: 0}, 1400).stop();
+			$('#output').animate({ marginBottom: -90}, 100).delay(500).animate({ marginBottom: 0}, 800);
 				var url = $('#videoid').val(),
 		// url = url.replace("https://www.youtube.com/watch?v=", "");
 			url = url.replace("https://www.youtube.com/watch?v=", "http://www.youtube.com/embed/"),
