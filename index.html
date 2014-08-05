@@ -175,7 +175,7 @@
 		}
 	
 		$('#youtubeDataQuery').submit(function(e) {
-			$('#output').animate({ marginBottom: -90}, 100).delay(300).animate({ marginBottom: 0}, 1400);
+			$('#output').animate({ marginBottom: -90}, 100).delay(500).animate({ marginBottom: 0}, 1400).stop();
 				var url = $('#videoid').val(),
 		// url = url.replace("https://www.youtube.com/watch?v=", "");
 			url = url.replace("https://www.youtube.com/watch?v=", "http://www.youtube.com/embed/"),
