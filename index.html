@@ -160,7 +160,7 @@
 		if ( $(this).val().length >= 42) {
 			setTimeout(function () {
 		$('#youtubeDataQuery').trigger('submit');
-		}, 10);
+		}, 100);
 		}
 	});
 	$(document).ready(function() {
@@ -175,7 +175,7 @@
 		}
 	
 		$('#youtubeDataQuery').submit(function(e) {
-			$('#output').animate({ marginBottom: -90}, 100).delay(500).animate({ marginBottom: 0}, 800);
+			$('#output').animate({ marginBottom: -90}, 100).delay(100).animate({ marginBottom: 0}, 800);
 				var url = $('#videoid').val(),
 		// url = url.replace("https://www.youtube.com/watch?v=", "");
 			url = url.replace("https://www.youtube.com/watch?v=", "http://www.youtube.com/embed/"),
