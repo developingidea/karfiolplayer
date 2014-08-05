@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<title>Karfiol Player™</title>
+	<link rel="shortcut icon" href="bg.gif" />
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|PT+Sans:400,700|Open+Sans:400,700|Roboto+Condensed:400,700|Raleway|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
+		<style>
+		html, body { height: 100%; width: 100%; margin: 0;  overflow: hidden; background: url(bg.gif) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;
+			font-family: 'Roboto Slab', arial; font-size: 11px;}
+		.container {
+			width: 450px;
+			margin: auto;
+			display: block;
+			margin-top: 50px;
+		}
+		b {
+			display: block;
+			letter-spacing: 1px;
+			line-height: 30px;
+			font-size: 16px;
+		}
+			.btn {
+		position: relative;
+		vertical-align: top;
+		width: 100px;
+		margin-top: 2px;
+		
+		height: 50px;
+		padding: 0;
+		font-size: 17px;
+		color: white;
+		text-align: center;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+		background: #1abc9c;
+		border: 0;
+		border-bottom: 2px solid #12ab8d;
+		cursor: pointer;
+		-webkit-box-shadow: inset 0 -2px #12ab8d;
+		box-shadow: inset 0 -2px #12ab8d;
+		opacity: 0.8;
+		}
+		.btn:active {
+		top: 1px;
+		outline: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		}
+		#videoid {
+			background: rgba(255,255,255,0.7);
+			line-height: 47px;
+			margin-right: 5px;
+			width: 300px;
+			border: none;
+			padding-left: 10px;
+			color: #222;
+			box-shadow: 0 0 5px #ccc;
+				float: left;
+			font-family: 'Droid Sans', arial;
+				letter-spacing: 1px;
+		}
+		input:focus{
+		outline:none;
+		}
+		#output {
+		position: fixed;
+		bottom: 0px;
+		left: 0px;
+		width: 100%;
+		background: rgba(0,0,0,0.4);
+		height: 90px;
+		color: #eee;
+		margin-bottom: -90px;
+		box-shadow: 0 0 10px rgba(0,0,0,0.4)
+		}
+		#output img {
+		float: left;
+		}
+		#output iframe {
+		float: left;
+		height: 90px;
+		width: 140px;
+		box-shadow: 0 0 10px rgba(0,0,0,0.4)
+		}
+		ul {
+		float: left;
+		margin-left:0px;
+		padding-left: 0px;
+		position: absolute;
+		left: 170px;
+		}
+		ul li {
+		list-style-type: none;
+		margin-left: 0px;
+		display: block;
+		line-height: 22px
+		}
+		.title {
+		font-size: 18px;
+		line-height: 35px;
+		padding-bottom: 2px;
+		}
+		.time {
+			font-size: 16px;
+			line-height: 18px;
+			display: none;
+		}
+		@media only all and (max-width: 700px) {
+			.container {
+				width: 90% !important;
+			}
+			#videoid {
+				width: 90%;
+				margin-bottom: 10px;
+
+			}
+			b {
+				font-size: 18px;
+				margin-bottom: 5px;
+			}
+			.others {
+				display: none
+			}
+
+}
+		</style>
+		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+	</head>
+	<body>
+		<form id="youtubeDataQuery">
+			<div class="container">
+				<b>Add meg a videó URL-jét:</b>
+				<input id="videoid" value="https://www.youtube.com/watch?v=aJGXgC-7jsQ" type="text" maxlength="50">
+				<input class="btn" type="submit" value="Lejátszás">
+			</div>
+			<div id="output"></div>
+		</form>
+		
+		<script type="text/javascript">
+		function youtubeDataCallback(data) {
+			var s = '';
+			var title = data.entry.title.$t + '// Karfiol Player™';
+			var url = $('#videoid').val(),
+			url = url.replace("https://www.youtube.com/watch?v=", "http://www.youtube.com/embed/"),
+			url = url+'?autoplay=1';
+			s += '<iframe id="player" src="'+url+'&showinfo=0&controls=0" frameborder="0" allowfullscreen></iframe>'
+			s += '<ul><li class="title">' + data.entry.title.$t + '</li>';
+			s += '<li class="time">' + Math.floor(data.entry.media$group.yt$duration.seconds / 60) + ':' + (data.entry.media$group.yt$duration.seconds % 60) + '</li>';			
+			s += '<li class="others">' + data.entry.yt$statistics.viewCount + ' megtekintés</li>';
+			s += '</ul>';
+			$('#output').html(s);
+			$('title').html(title);
+		}
+		$( "input[type='text']" ).keyup(function() {
+			if ( $(this).val().length >= 42) {
+				setTimeout(function () {
+			$('#youtubeDataQuery').trigger('submit');
+			}, 2000);
+			}
+		});
+	$(document).ready(function() {
+		if(window.location.hash) {
+			var hash = window.location.hash.substring(1);
+				$('#videoid').empty().val('https://www.youtube.com/watch?v='+hash);
+				$('iframe#player').attr('src', 'http://www.youtube.com/embed/'+hash+'?autoplay=1');
+				setTimeout(function () {
+				$('#youtubeDataQuery').trigger('submit');
+						}, 10);
+			}
+		
+			$('#youtubeDataQuery').submit(function(e) {
+				$('#output').animate({ marginBottom: -90}, 100).delay(700).animate({ marginBottom: 0}, 1200);
+
+					var url = $('#videoid').val(),
+			// url = url.replace("https://www.youtube.com/watch?v=", "");
+				url = url.replace("https://www.youtube.com/watch?v=", "http://www.youtube.com/embed/"),
+				url = url+'?autoplay=1';
+				var videourl = url;
+
+				var url = $('#videoid').val(),
+			// url = url.replace("https://www.youtube.com/watch?v=", "");
+				url = url.replace("https://www.youtube.com/watch?v=", "http://www.youtube.com/embed/"),
+				url = url+'?autoplay=1';
+
+
+				var addhash = $('#videoid').val(),
+				addhash = addhash.replace("https://www.youtube.com/watch?v=", "");
+
+				window.location.hash = addhash;
+
+
+						$('iframe#player').attr('src', url);
+
+
+			e.preventDefault();
+			var videoid = $('#videoid').val();
+			videoid = videoid.replace("https://www.youtube.com/watch?v=", "");
+			var m;
+			if (m = videoid.match(/^http:\/\/www\.youtube\.com\/.*[?&]v=([^&]+)/i) || videoid.match(/^http:\/\/youtu\.be\/([^?]+)/i)) {
+			videoid = m[1];
+			}
+			// if (!videoid.match(/^[a-z0-9_-]{11}$/i)) {
+			//   alert('Unable to parse Video ID/URL.');
+			//   return;
+			// }
+			$.getScript('http://gdata.youtube.com/feeds/api/videos/' + encodeURIComponent(videoid) + '?v=2&alt=json-in-script&callback=youtubeDataCallback');
+			});
+		});
+	</script>
+
+</body></html>
